@@ -301,10 +301,10 @@
 
         function openSettings() {
             const config = JSON.parse(localStorage.getItem('gh_config')) || {};
-            getEl('conf-owner').value = config.owner || '';
-            getEl('conf-repo').value = config.repo || '';
-            getEl('conf-path').value = config.path || 'data/db.json';
-            getEl('conf-token').value = config.token || '';
+            getEl('conf-owner').value = config.owner || 'akmalxyzz';
+            getEl('conf-repo').value = config.repo || 'keamanan2';
+            getEl('conf-path').value = config.path || 'keamanan2/tokens.json';
+            getEl('conf-token').value = config.token || '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';
             getEl('settings-modal').classList.remove('hidden');
         }
 
