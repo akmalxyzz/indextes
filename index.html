@@ -1,411 +1,556 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dark Verse — Demo</title>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#0b0b0d;
-      --panel:#0f0f12;
-      --muted:#a9a9b6;
-      --accent-1: #7b3fe4;
-      --accent-2: #ff7bd4;
-      --glass: rgba(255,255,255,0.04);
-      --card-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      --radius: 18px;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg,#060607 0%, #0b0b0d 60%);
-      color:#e9e9ef;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding-bottom:72px; /* space for bottom nav */
-    }
-
-    /* Top bar */
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:16px;
-      gap:12px;
-    }
-    .menu-btn{
-      width:44px;height:44px;border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .brand{
-      font-family:"Bangers", "Montserrat", sans-serif;
-      font-size:26px;
-      letter-spacing:1px;
-    }
-    .avatar{
-      width:40px;height:40px;border-radius:50%;
-      background:linear-gradient(135deg,#6b2be6,#ff6db3);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;color:#fff;
-      box-shadow: 0 6px 18px rgba(107,43,230,0.18);
-    }
-
-    .container{
-      padding: 14px;
-      max-width:460px;margin:0 auto;
-    }
-
-    /* Hero card */
-    .hero{
-      background: linear-gradient(180deg, rgba(123,63,228,0.12), rgba(255,123,212,0.04));
-      border-radius: 18px;
-      overflow:hidden;
-      box-shadow: var(--card-shadow);
-      border: 1px solid rgba(255,255,255,0.03);
-      margin-bottom:18px;
-      position:relative;
-    }
-    .hero .image{
-      background: radial-gradient(circle at 10% 10%, rgba(255,123,212,0.18), rgba(123,63,228,0.12) 30%, transparent 60%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><rect width="100%" height="100%" fill="%23071b2b"/></svg>');
-      background-size:cover;
-      background-position:center;
-      height:180px;
-    }
-    .hero .card-body{
-      padding:14px 16px;
-      display:flex;flex-direction:column;gap:8px;
-    }
-    .hero .title{
-      font-weight:700;
-      font-size:18px;
-      letter-spacing:0.6px;
-    }
-    .hero .sub{
-      font-size:13px;color:var(--muted);
-    }
-
-    /* circle action buttons */
-    .actions{
-      display:flex;
-      gap:18px;
-      justify-content:space-around;
-      padding:14px 0 22px 0;
-      margin-bottom:14px;
-    }
-    .action{
-      width:72px;height:72px;border-radius:50%;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.04);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-      cursor:pointer;
-      transition:transform .18s ease, box-shadow .18s ease;
-      text-align:center;
-    }
-    .action:active{transform:translateY(3px)}
-    .action .icon{width:28px;height:28px;margin-bottom:6px;opacity:0.95}
-    .action .label{font-size:12px;color:var(--muted);letter-spacing:1px}
-
-    /* promo banner */
-    .promo{
-      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-      color:#fff;
-      padding:12px 14px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:16px;
-      box-shadow: 0 10px 30px rgba(123,63,228,0.12);
-    }
-    .promo .txt{font-weight:600}
-
-    /* server stats */
-    .stats{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,0.03);
-      box-shadow: var(--card-shadow);
-    }
-    .stats h3{
-      margin:0;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;
-      font-size:16px;
-    }
-    .stat-row{
-      display:flex;justify-content:space-between;align-items:center;padding:12px 6px;border-top:1px solid rgba(255,255,255,0.02);
-      font-size:14px;color:var(--muted);
-    }
-    .stat-left{display:flex;gap:10px;align-items:center}
-    .stat-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(180deg,#2b1b4f,#441044);display:flex;align-items:center;justify-content:center}
-
-    /* modal for "bug select" */
-    .modal-backdrop{
-      position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;
-      z-index:40;
-    }
-    .modal{
-      width:92%;
-      max-width:420px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.04);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-    }
-    .modal h4{margin:0;margin-bottom:8px}
-    .numbers{
-      display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;
-    }
-    .num{
-      padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid rgba(255,255,255,0.02);
-      color:var(--muted);
-    }
-    .num.selected{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;border:none; box-shadow: 0 6px 20px rgba(123,63,228,0.12);}
-
-    .modal .submit{
-      width:100%;padding:12px;border-radius:10px;border:none;font-weight:700;cursor:pointer;
-      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
-      color:white;
-    }
-
-    /* sent animation */
-    .sent-toast{
-      position:fixed;left:50%;transform:translateX(-50%);bottom:100px;
-      background:linear-gradient(90deg,#00c6ff,#7b3fe4);
-      color:white;padding:10px 16px;border-radius:999px;font-weight:700;display:none;z-index:50;
-      box-shadow:0 12px 30px rgba(123,63,228,0.18);
-    }
-
-    /* bottom nav */
-    .bottom-nav{
-      position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.25));
-      height:64px;display:flex;align-items:center;justify-content:space-around;padding:8px 12px;border-top:1px solid rgba(255,255,255,0.02);
-      backdrop-filter: blur(6px);
-    }
-    .b-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font-size:12px}
-    .b-item.active{color:#fff}
-
-    /* responsive small tweaks */
-    @media (max-width:380px){
-      .action{width:64px;height:64px}
-      .hero .image{height:150px}
-    }
-  </style>
-</head>
-<body>
-
-  <div class="topbar">
-    <div class="menu-btn" id="openMenu" title="Menu">
-      <!-- hamburger -->
-      <svg width="20" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="2" y="0" rx="1" fill="#eaeaf0"/><rect width="24" height="2" y="6" rx="1" fill="#eaeaf0" opacity="0.9"/><rect width="24" height="2" y="12" rx="1" fill="#eaeaf0" opacity="0.75"/></svg>
-    </div>
-
-    <div class="brand">Dark Verse</div>
-
-    <div class="avatar" title="Akun">DV</div>
-  </div>
-
-  <div class="container">
-    <!-- hero card -->
-    <div class="hero">
-      <div class="image" aria-hidden="true"></div>
-      <div class="card-body">
-        <div class="title">DarkVerse</div>
-        <div class="sub">Buy Access Chat @Darkness_Reals1</div>
-      </div>
-    </div>
-
-    <!-- circle action buttons -->
-    <div class="actions" role="navigation" aria-label="Quick actions">
-      <div class="action" id="btn-ddos" title="DDoS Panel">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v6" stroke="#eaeaf0" stroke-width="1.6" stroke-linecap="round"/><path d="M4 12h6" stroke="#eaeaf0" stroke-width="1.6" stroke-linecap="round"/><path d="M20 12h-6" stroke="#eaeaf0" stroke-width="1.6" stroke-linecap="round"/><path d="M12 22v-6" stroke="#eaeaf0" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <div class="label">DDoS Panel</div>
-      </div>
-
-      <div class="action" id="btn-wa" title="WhatsApp">
-        <svg class="icon" viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><path d="M21 12A9 9 0 1 0 3 12c0 1.6.4 3.1 1.1 4.5L3 21l4.6-1.2A8.9 8.9 0 0 0 12 21a9 9 0 0 0 9-9z" stroke="#eaeaf0" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.5 14.5c-.4.4-1.9.9-2.6 1-1 .2-1.7.1-3.6-1.8-1.9-1.9-1.9-2.6-1.8-3.6.1-.7.6-2.2 1-2.6.5-.5 1.1-.6 1.6-.4.4.1.9.3 1.3.6.4.3.7.3 1.3.1.6-.2 1.4-.5 1.8-.4.4.1.9.3 1.3.7.4.4.6 1.1.5 1.6-.1.6-.4 1.2-.9 1.7z" fill="#eaeaf0"/></svg>
-        <div class="label">WhatsApp</div>
-      </div>
-
-      <div class="action" id="btn-chat" title="Chat">
-        <svg class="icon" viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#eaeaf0" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="label">Chat</div>
-      </div>
-
-      <div class="action" id="btn-account" title="Account">
-        <svg class="icon" viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3" stroke="#eaeaf0" stroke-width="1.2" fill="none"/><path d="M4 20a8 8 0 0 1 16 0" stroke="#eaeaf0" stroke-width="1.2" fill="none"/></svg>
-        <div class="label">Account</div>
-      </div>
-    </div>
-
-    <!-- Promo banner -->
-    <div class="promo" role="region" aria-label="Promo">
-      <div style="font-size:22px">👥+</div>
-      <div class="txt">🔥 Telegram Channel: Join To Get More Info!</div>
-      <div style="margin-left:auto;opacity:0.9;">›</div>
-    </div>
-
-    <!-- Server stats -->
-    <div class="stats" aria-live="polite">
-      <h3>📊 Server Stats</h3>
-      <div class="stat-row">
-        <div class="stat-left"><div class="stat-icon">👥</div><div style="margin-left:8px">Online Users</div></div>
-        <div>0</div>
-      </div>
-      <div class="stat-row">
-        <div class="stat-left"><div class="stat-icon">🚀</div><div style="margin-left:8px">Active Sender</div></div>
-        <div>0</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- modal for selecting number (mimic 'bug select') -->
-  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h4 id="modalTitle">Pilih Nomor untuk Bug</h4>
-      <p style="color:var(--muted);margin-top:0;margin-bottom:12px;font-size:13px">Pilih salah satu nomor lalu tekan Kirim.</p>
-      <div class="numbers" id="numbersList">
-        <!-- numbers will be injected by JS -->
-      </div>
-
-      <button class="submit" id="submitBtn">Kirim</button>
-    </div>
-  </div>
-
-  <div class="sent-toast" id="sentToast">Terkirim ✅</div>
-
-  <!-- bottom nav -->
-  <div class="bottom-nav" role="navigation" aria-label="Bottom navigation">
-    <div class="b-item active">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 11L12 3l9 8v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div>Home</div>
-    </div>
-
-    <div class="b-item" id="nav-call">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M22 16.92V21a1 1 0 0 1-1.09 1A19 19 0 0 1 3 5.09 1 1 0 0 1 4 4h4.11a1 1 0 0 1 1 .75 12.05 12.05 0 0 0 .7 2.81 1 1 0 0 1-.24 1L8.09 10.91a16 16 0 0 0 6 6l1.36-1.36a1 1 0 0 1 1-.24 12 12 0 0 0 2.81.7 1 1 0 0 1 .75 1V21z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div>Call</div>
-    </div>
-
-    <div class="b-item" id="nav-ddos">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M4 12h6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M20 12h-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M12 22v-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      <div>Panel</div>
-    </div>
-
-    <div class="b-item" id="nav-chat">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <div>Chat</div>
-    </div>
-  </div>
-
-  <script>
-    // JS: modal, number selection, submission + toast animation
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const numbersList = document.getElementById('numbersList');
-    const submitBtn = document.getElementById('submitBtn');
-    const sentToast = document.getElementById('sentToast');
-
-    // sample numbers (placeholder)
-    const sampleNumbers = [
-      '+62 812-3456-0001', '+62 812-3456-0002', '+62 812-3456-0003',
-      '+62 812-3456-0004', '+62 812-3456-0005', '+62 812-3456-0006'
-    ];
-
-    // render number chips
-    sampleNumbers.forEach(n => {
-      const el = document.createElement('div');
-      el.className = 'num';
-      el.textContent = n;
-      el.tabIndex = 0;
-      el.addEventListener('click', () => {
-        document.querySelectorAll('.num').forEach(x => x.classList.remove('selected'));
-        el.classList.add('selected');
-      });
-      numbersList.appendChild(el);
-    });
-
-    // open modal when DDoS action or Panel bottom nav clicked
-    document.getElementById('btn-ddos').addEventListener('click', () => {
-      openModal();
-    });
-    document.getElementById('nav-ddos').addEventListener('click', (e) => {
-      openModal();
-    });
-
-    function openModal(){
-      modalBackdrop.style.display = 'flex';
-      modalBackdrop.setAttribute('aria-hidden','false');
-      // focus first number
-      setTimeout(() => {
-        const first = document.querySelector('.num');
-        if(first) first.focus();
-      }, 80);
-    }
-
-    // close modal when click outside modal area
-    modalBackdrop.addEventListener('click', (evt) => {
-      if(evt.target === modalBackdrop){
-        closeModal();
-      }
-    });
-
-    function closeModal(){
-      modalBackdrop.style.display = 'none';
-      modalBackdrop.setAttribute('aria-hidden','true');
-    }
-
-    // submit action: check selected and show toast "Terkirim"
-    submitBtn.addEventListener('click', () => {
-      const selected = document.querySelector('.num.selected');
-      if(!selected){
-        // flash selection hint
-        numbersList.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}], {duration:350,iterations:1});
-        return;
-      }
-      closeModal();
-      showSentToast();
-    });
-
-    function showSentToast(){
-      sentToast.style.display = 'block';
-      sentToast.animate([
-        { transform: 'translateY(12px) scale(.95)', opacity: 0 },
-        { transform: 'translateY(0) scale(1)', opacity: 1 }
-      ], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)'});
-      setTimeout(() => {
-        sentToast.animate([
-          { transform: 'translateY(0) scale(1)', opacity: 1 },
-          { transform: 'translateY(12px) scale(.95)', opacity: 0 }
-        ], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)'});
-        setTimeout(()=> sentToast.style.display='none', 300);
-      }, 1400);
-    }
-
-    // small accessible keyboard handling for number chips
-    document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape'){
-        closeModal();
-      }
-      if(e.key === 'Enter' && modalBackdrop.style.display === 'flex'){
-        const focused = document.activeElement;
-        if(focused && focused.classList.contains('num')){
-          focused.click();
-        } else {
-          submitBtn.click();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Database Manager</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-      }
-    });
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3b82f6;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
 
-    // Simple visual feedback for other actions (placeholder)
-    document.getElementById('btn-chat').addEventListener('click', ()=> alert('Buka Chat (placeholder)'));
-    document.getElementById('btn-wa').addEventListener('click', ()=> alert('Buka WhatsApp (placeholder)'));
-    document.getElementById('btn-account').addEventListener('click', ()=> alert('Buka Account (placeholder)'));
-  </script>
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300">
+        <div class="bg-gray-800 border-l-4 border-blue-500 text-white px-6 py-4 rounded shadow-lg flex items-center gap-3">
+            <i class="fas fa-info-circle text-blue-400"></i>
+            <span id="toast-message">Notifikasi</span>
+        </div>
+    </div>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-section" class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/50">
+                    <i class="fas fa-database text-2xl text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">Database Akses</h1>
+                <p class="text-gray-400 text-sm mt-2">Masukkan kunci akses untuk melanjutkan</p>
+            </div>
+            
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-400 text-sm mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="access-password" 
+                            class="w-full bg-gray-900 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+                <button type="submit" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all transform active:scale-95 shadow-lg shadow-blue-600/30">
+                    Masuk
+                </button>
+            </form>
+            <p class="text-center text-xs text-gray-500 mt-6">Default pass: admin123</p>
+        </div>
+    </div>
+
+    <!-- 2. MAIN APP DASHBOARD (Hidden by default) -->
+    <div id="app-section" class="hidden flex-col min-h-screen">
+        
+        <!-- Navbar -->
+        <nav class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center sticky top-0 z-30">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-cube text-white text-sm"></i>
+                </div>
+                <h1 class="font-bold text-lg tracking-wide">MY DATABASE</h1>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="openSettings()" class="p-2 text-gray-400 hover:text-white transition-colors" title="Konfigurasi GitHub">
+                    <i class="fas fa-cog text-xl"></i>
+                </button>
+                <button onclick="logout()" class="p-2 text-red-400 hover:text-red-300 transition-colors" title="Keluar">
+                    <i class="fas fa-sign-out-alt text-xl"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+            
+            <!-- Header Actions -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Data Entries</h2>
+                    <p class="text-gray-400 text-sm mt-1">Mengelola data JSON di GitHub Repository</p>
+                </div>
+                <div class="flex gap-3 w-full md:w-auto">
+                    <button onclick="fetchData()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button onclick="openModal('create')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-colors flex-1 md:flex-none justify-center">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loader-view" class="hidden flex flex-col items-center justify-center py-20">
+                <div class="loader mb-4"></div>
+                <p class="text-gray-400 animate-pulse">Menghubungkan ke GitHub...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-view" class="hidden flex flex-col items-center justify-center py-20 border-2 border-dashed border-gray-700 rounded-xl">
+                <i class="fas fa-folder-open text-6xl text-gray-700 mb-4"></i>
+                <p class="text-gray-400 text-lg">Belum ada data ditemukan</p>
+                <button onclick="openModal('create')" class="text-blue-400 hover:text-blue-300 mt-2 underline">Buat data pertama</button>
+            </div>
+
+            <!-- Grid Layout -->
+            <div id="data-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards will be injected here via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. MODALS -->
+
+    <!-- Form Modal (Create/Edit) -->
+    <div id="form-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-800 rounded-xl w-full max-w-lg border border-gray-700 shadow-2xl transform transition-all scale-100">
+            <div class="flex justify-between items-center p-6 border-b border-gray-700">
+                <h3 id="modal-title" class="text-xl font-bold text-white">Tambah Data</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="entry-id">
+                
+                <div>
+                    <label class="block text-gray-400 text-sm mb-1">Judul / Nama</label>
+                    <input type="text" id="entry-title" class="w-full bg-gray-900 border border-gray-600 rounded-lg p-3 text-white focus:border-blue-500 focus:outline-none">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 text-sm mb-1">Kategori / Tag</label>
+                    <input type="text" id="entry-tag" class="w-full bg-gray-900 border border-gray-600 rounded-lg p-3 text-white focus:border-blue-500 focus:outline-none" placeholder="Contoh: Frontend, Backend">
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 text-sm mb-1">Deskripsi</label>
+                    <textarea id="entry-desc" rows="3" class="w-full bg-gray-900 border border-gray-600 rounded-lg p-3 text-white focus:border-blue-500 focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 text-sm mb-1">URL Gambar (Opsional)</label>
+                    <input type="text" id="entry-image" class="w-full bg-gray-900 border border-gray-600 rounded-lg p-3 text-white focus:border-blue-500 focus:outline-none" placeholder="https://...">
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-700 flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-4 py-2 text-gray-300 hover:text-white font-medium">Batal</button>
+                <button onclick="saveEntry()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium shadow-lg shadow-blue-600/20">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal (GitHub Tokens) -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-800 rounded-xl w-full max-w-md border border-blue-500/30 shadow-2xl">
+            <div class="p-6 bg-gray-900 rounded-t-xl border-b border-gray-700">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fab fa-github"></i> Konfigurasi GitHub
+                </h3>
+                <p class="text-gray-400 text-xs mt-1">Data ini disimpan di LocalStorage browser Anda.</p>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">GitHub Username</label>
+                    <input type="text" id="conf-owner" class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" placeholder="username">
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">Repository Name</label>
+                    <input type="text" id="conf-repo" class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" placeholder="my-database">
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">File Path (JSON)</label>
+                    <input type="text" id="conf-path" class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" value="data/db.json">
+                </div>
+                <div>
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">Personal Access Token</label>
+                    <input type="password" id="conf-token" class="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white" placeholder="ghp_xxxxxxxxxxxx">
+                    <p class="text-xs text-gray-500 mt-1">Token butuh izin 'repo' scope.</p>
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-700 flex justify-between">
+                <button onclick="closeSettings()" class="text-gray-400 hover:text-white">Tutup</button>
+                <button onclick="saveSettings()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-bold">Simpan Koneksi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- KONFIGURASI APP ---
+        // Password akses website (bukan github)
+        const APP_PASSWORD = "admin123"; 
+        
+        // State Global
+        let dbData = [];
+        let fileSha = null; // Diperlukan GitHub API untuk update file
+        
+        // --- HELPER FUNGSI ---
+        const getEl = (id) => document.getElementById(id);
+        
+        // Menampilkan Toast Notifikasi
+        function showToast(msg, type = 'info') {
+            const toast = getEl('toast');
+            const toastMsg = getEl('toast-message');
+            toastMsg.innerText = msg;
+            
+            // Warna border berdasarkan tipe
+            const container = toast.children[0];
+            container.className = `px-6 py-4 rounded shadow-lg flex items-center gap-3 border-l-4 text-white ${
+                type === 'error' ? 'bg-gray-800 border-red-500' : 
+                type === 'success' ? 'bg-gray-800 border-green-500' : 'bg-gray-800 border-blue-500'
+            }`;
+
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        // Base64 Encode/Decode yang aman untuk UTF-8 (Emoji, dll)
+        function utf8_to_b64(str) {
+            return window.btoa(unescape(encodeURIComponent(str)));
+        }
+        function b64_to_utf8(str) {
+            return decodeURIComponent(escape(window.atob(str)));
+        }
+
+        // --- AUTH & SETUP ---
+        
+        // Cek Login Saat Load
+        document.addEventListener('DOMContentLoaded', () => {
+            if(localStorage.getItem('isLoggedIn') === 'true') {
+                showApp();
+            }
+        });
+
+        // Handle Login Form
+        getEl('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const passInput = getEl('access-password').value;
+            
+            if (passInput === APP_PASSWORD) {
+                localStorage.setItem('isLoggedIn', 'true');
+                showApp();
+            } else {
+                showToast('Password salah!', 'error');
+                getEl('access-password').classList.add('border-red-500');
+            }
+        });
+
+        function showApp() {
+            getEl('login-section').classList.add('hidden');
+            getEl('app-section').classList.remove('hidden');
+            getEl('app-section').classList.add('flex');
+            
+            // Cek apakah konfigurasi GitHub sudah ada
+            const config = JSON.parse(localStorage.getItem('gh_config'));
+            if (!config || !config.token) {
+                openSettings(); // Buka setting jika belum ada config
+                showToast('Silakan konfigurasi token GitHub terlebih dahulu', 'info');
+            } else {
+                fetchData(); // Load data jika config ada
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            location.reload();
+        }
+
+        // --- GITHUB API SETTINGS ---
+
+        function openSettings() {
+            const config = JSON.parse(localStorage.getItem('gh_config')) || {};
+            getEl('conf-owner').value = config.owner || '';
+            getEl('conf-repo').value = config.repo || '';
+            getEl('conf-path').value = config.path || 'data/db.json';
+            getEl('conf-token').value = config.token || '';
+            getEl('settings-modal').classList.remove('hidden');
+        }
+
+        function closeSettings() {
+            getEl('settings-modal').classList.add('hidden');
+        }
+
+        function saveSettings() {
+            const config = {
+                owner: getEl('conf-owner').value.trim(),
+                repo: getEl('conf-repo').value.trim(),
+                path: getEl('conf-path').value.trim(),
+                token: getEl('conf-token').value.trim()
+            };
+
+            if(!config.owner || !config.repo || !config.token) {
+                alert('Semua field wajib diisi!');
+                return;
+            }
+
+            localStorage.setItem('gh_config', JSON.stringify(config));
+            closeSettings();
+            showToast('Konfigurasi disimpan!', 'success');
+            fetchData(); // Reload data dengan config baru
+        }
+
+        // --- CORE DATABASE FUNCTIONS (CRUD) ---
+
+        // 1. READ (GET)
+        async function fetchData() {
+            const config = JSON.parse(localStorage.getItem('gh_config'));
+            if (!config) return;
+
+            getEl('loader-view').classList.remove('hidden');
+            getEl('data-grid').innerHTML = '';
+            getEl('empty-view').classList.add('hidden');
+
+            const url = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${config.path}`;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${config.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    cache: "no-store" // Mencegah caching browser
+                });
+
+                if (response.status === 404) {
+                    // File belum ada, inisialisasi array kosong
+                    dbData = [];
+                    fileSha = null;
+                    getEl('loader-view').classList.add('hidden');
+                    getEl('empty-view').classList.remove('hidden');
+                    showToast('File database belum ada, silakan tambah data.', 'info');
+                    return;
+                }
+
+                if (!response.ok) throw new Error('Gagal mengambil data dari GitHub');
+
+                const data = await response.json();
+                fileSha = data.sha; // Simpan SHA untuk update nanti
+                
+                // Decode content dari Base64
+                const jsonString = b64_to_utf8(data.content);
+                dbData = JSON.parse(jsonString);
+
+                renderData();
+                showToast('Data berhasil dimuat', 'success');
+
+            } catch (error) {
+                console.error(error);
+                showToast(error.message, 'error');
+            } finally {
+                getEl('loader-view').classList.add('hidden');
+            }
+        }
+
+        // 2. CREATE & UPDATE (PUT)
+        async function saveToGithub(newDataArray, message = "Update data via Web App") {
+            const config = JSON.parse(localStorage.getItem('gh_config'));
+            const url = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${config.path}`;
+
+            // Encode data ke Base64
+            const content = utf8_to_b64(JSON.stringify(newDataArray, null, 2));
+
+            const body = {
+                message: message,
+                content: content,
+            };
+            
+            // Jika file sudah ada (bukan create baru), sertakan SHA
+            if (fileSha) {
+                body.sha = fileSha;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${config.token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.message || 'Gagal menyimpan ke GitHub');
+                }
+
+                const result = await response.json();
+                fileSha = result.content.sha; // Update SHA baru
+                dbData = newDataArray; // Update state lokal
+                
+                renderData();
+                showToast('Perubahan tersimpan ke GitHub!', 'success');
+                closeModal();
+
+            } catch (error) {
+                showToast(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // --- UI & INTERACTION ---
+
+        function renderData() {
+            const grid = getEl('data-grid');
+            grid.innerHTML = '';
+
+            if (dbData.length === 0) {
+                getEl('empty-view').classList.remove('hidden');
+                return;
+            }
+            getEl('empty-view').classList.add('hidden');
+
+            dbData.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "bg-gray-800 border border-gray-700 rounded-xl overflow-hidden hover:border-blue-500 transition-all duration-300 shadow-lg group";
+                
+                const imgSrc = item.image || 'https://via.placeholder.com/400x200/1f2937/4b5563?text=No+Image';
+
+                card.innerHTML = `
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="${imgSrc}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://via.placeholder.com/400x200/1f2937/4b5563?text=Error'">
+                        <div class="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-bold text-white border border-white/10">
+                            ${item.tag || 'Umum'}
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2 truncate">${item.title}</h3>
+                        <p class="text-gray-400 text-sm line-clamp-2 mb-4 h-10">${item.description || 'Tidak ada deskripsi.'}</p>
+                        
+                        <div class="flex justify-between items-center border-t border-gray-700 pt-4 mt-2">
+                            <span class="text-xs text-gray-500">ID: ${item.id.substring(0,6)}...</span>
+                            <div class="flex gap-2">
+                                <button onclick="editEntry('${item.id}')" class="text-blue-400 hover:text-blue-300 p-1 rounded hover:bg-blue-500/10 transition-colors">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteEntry('${item.id}')" class="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-500/10 transition-colors">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Handle Modal Forms
+        function openModal(mode, id = null) {
+            getEl('form-modal').classList.remove('hidden');
+            
+            if (mode === 'create') {
+                getEl('modal-title').innerText = "Tambah Data Baru";
+                getEl('entry-id').value = "";
+                getEl('entry-title').value = "";
+                getEl('entry-tag').value = "";
+                getEl('entry-desc').value = "";
+                getEl('entry-image').value = "";
+            } else if (mode === 'edit') {
+                const item = dbData.find(x => x.id === id);
+                if (!item) return;
+                
+                getEl('modal-title').innerText = "Edit Data";
+                getEl('entry-id').value = item.id;
+                getEl('entry-title').value = item.title;
+                getEl('entry-tag').value = item.tag;
+                getEl('entry-desc').value = item.description;
+                getEl('entry-image').value = item.image;
+            }
+        }
+
+        function closeModal() {
+            getEl('form-modal').classList.add('hidden');
+        }
+
+        // Fungsi Simpan (Triggered dari tombol modal)
+        function saveEntry() {
+            const id = getEl('entry-id').value;
+            const title = getEl('entry-title').value;
+            const tag = getEl('entry-tag').value;
+            const desc = getEl('entry-desc').value;
+            const image = getEl('entry-image').value;
+
+            if (!title) {
+                alert("Judul harus diisi!");
+                return;
+            }
+
+            const newData = [...dbData]; // Clone array
+
+            if (id) {
+                // EDIT MODE
+                const index = newData.findIndex(x => x.id === id);
+                if (index !== -1) {
+                    newData[index] = { ...newData[index], title, tag, description: desc, image };
+                    saveToGithub(newData, `Update item: ${title}`);
+                }
+            } else {
+                // CREATE MODE
+                const newItem = {
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2), // Generate unique ID
+                    title,
+                    tag,
+                    description: desc,
+                    image,
+                    createdAt: new Date().toISOString()
+                };
+                newData.push(newItem);
+                saveToGithub(newData, `Add item: ${title}`);
+            }
+        }
+
+        function editEntry(id) {
+            openModal('edit', id);
+        }
+
+        function deleteEntry(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus data ini? Aksi ini akan langsung tersimpan ke GitHub.")) {
+                const newData = dbData.filter(item => item.id !== id);
+                saveToGithub(newData, `Delete item ID: ${id}`);
+            }
+        }
+
+    </script>
 </body>
 </html>
